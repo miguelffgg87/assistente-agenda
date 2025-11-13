@@ -549,6 +549,13 @@ app.get("/login", (req, res) => {
   `);
 });
 
+const PORT = process.env.PORT || 3000;
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+const API_KEY = process.env.GOOGLE_API_KEY;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
 
 
 const PORT = 5000;
