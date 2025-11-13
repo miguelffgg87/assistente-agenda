@@ -56,9 +56,9 @@ const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || "https://assisten
 passport.use(
   new GoogleStrategy(
     {
-      clientID: "1068590504127-gkdstifoortadlvmmeb71t7rpr1on4ua.apps.googleusercontent.com",
-      clientSecret: "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",
-      callbackURL: "https://assistente-agenda.onrender.com/auth/google-ui/callback",
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3000/auth/google-ui/callback",
     },
     (accessToken, refreshToken, profile, done) => {
       const user = {
