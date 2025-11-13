@@ -331,7 +331,7 @@ Responda APENAS com o JSON válido, sem explicações adicionais.`;
   let eventDate = null;
 
   if (analysis.datetime) {
-    const chronoDate = chrono.parseDate(userMessage, new Date(), { forwardDate: true });
+    const chronoDate = chrono.pt.parseDate(userMessage, new Date(), { forwardDate: true });
     eventDate = chronoDate || new Date(analysis.datetime);
     console.log("⏱ Data final do evento:", eventDate.toString());
   } else {
@@ -372,7 +372,7 @@ Responda APENAS com o JSON válido, sem explicações adicionais.`;
       const fallbackResult = await fallbackModel.generateContent(fallbackPrompt);
       const fallbackResp = await fallbackResult.response;
       const fallbackText = await fallbackResp.text();
-      return { response: fallbackText };
+      return { response: fallbackText.replace(/```json|```/g, "").trim() };
     } catch (e) {
       console.error("Erro no fallback do modelo:", e);
       return { response: "⚠️ Ocorreu um erro ao processar sua mensagem. Tente novamente." };
