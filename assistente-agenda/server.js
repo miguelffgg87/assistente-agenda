@@ -10,6 +10,7 @@ import { google } from "googleapis";
 import * as chrono from "chrono-node";
 import dotenv from "dotenv";
 import fs from "fs";
+import dotenv from "dotenv";
 
 dotenv.config();
 
