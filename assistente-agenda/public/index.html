@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🗓️ Meu Assistente de Agenda</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header-bar">
+      <h1>🗓️ Minha Agenda Inteligente</h1>
+      <div class="auth-section">
+        <span id="auth-status">Verificando...</span>
+        <button id="login-btn" onclick="login()" style="display: none;">Conectar Google</button>
+        <button id="logout-btn" onclick="logout()" style="display: none;">Trocar de conta</button>
+      </div>
+    </div>
+
+    <div id="chat-container">
+      <div id="messages"></div>
+    </div>
+
+    <div class="input-area">
+      <input id="msg" type="text" placeholder="Ex: marcar médico amanhã às 14h" onkeypress="handleKeyPress(event)">
+      <button id="send-btn" onclick="enviar()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    async function checkAuth() {
+      try {
+        const res = await fetch("/auth/status");
+        const data = await res.json();
+
+        const authStatus = document.getElementById("auth-status");
+        const loginBtn = document.getElementById("login-btn");
+        const logoutBtn = document.getElementById("logout-btn");
+
+        if (data.connected) {
+          authStatus.textContent = `Olá, ${data.name}!`;
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "inline-block";
+        } else {
+          authStatus.textContent = "Não conectado";
+          loginBtn.style.display = "inline-block";
+          logoutBtn.style.display = "none";
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById("auth-status").textContent = "Erro ao verificar login";
+      }
+    }
+
+    function login() {
+      // Redireciona direto para o login do Google
+      window.location.href = "/auth/google-ui";
+    }
+
+    async function logout() {
+      await fetch("/auth/logout", { method: "POST" });
+      checkAuth();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      checkAuth();
+    });
+
+    function handleKeyPress(e) {
+      if (e.key === "Enter") enviar();
+    }
+
+    async function enviar() {
+      const msgInput = document.getElementById("msg");
+      const texto = msgInput.value.trim();
+      if (!texto) return;
+
+      const res = await fetch("/mensagem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ texto })
+      });
+
+      const data = await res.json();
+      const messagesDiv = document.getElementById("messages");
+      const newMsg = document.createElement("div");
+      newMsg.textContent = `🤖 ${data.resposta}`;
+      messagesDiv.appendChild(newMsg);
+      msgInput.value = "";
+    }
+  </script>
+</body>
+</html>
+
