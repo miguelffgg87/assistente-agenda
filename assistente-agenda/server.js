@@ -10,7 +10,6 @@ import { google } from "googleapis";
 import * as chrono from "chrono-node";
 import dotenv from "dotenv";
 import fs from "fs";
-import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -38,7 +37,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const genAI = new GoogleGenerativeAI("AIzaSyCYsIvkqiO6DobErI4RqZ4pIUNMI0WNkwI");
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 let connectionSettings;
 let isLoggedOut = false;
