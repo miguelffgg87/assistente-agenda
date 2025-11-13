@@ -25,7 +25,6 @@ app.set("trust proxy", 1);
 
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'minha-agenda-inteligente-secret-key-2025',
   resave: false,
   saveUninitialized: false,
   cookie: { 
@@ -57,7 +56,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3000/auth/google-ui/callback",
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || "https://assistente-agenda.onrender.com/auth/google-ui/callback",
     },
     (accessToken, refreshToken, profile, done) => {
       const user = {
